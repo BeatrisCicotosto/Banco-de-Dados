@@ -1,0 +1,195 @@
+DROP DATABASE IF EXISTS clinica;
+CREATE DATABASE clinica;
+USE clinica;
+
+-- SHOW DATABASES;
+-- SHOW SCHEMAS;
+
+CREATE TABLE Paises (
+	id_pais INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(45) NOT NULL    
+);
+
+CREATE TABLE Cidades (
+	id_cidade INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(45) NOT NULL,
+    uf CHAR(2),
+    id_pais INT NOT NULL,
+    PRIMARY KEY(id_cidade),
+    FOREIGN KEY (id_pais) REFERENCES Paises(id_pais)
+);
+
+-- SHOW TABLES;
+-- SHOW TABLE STATUS;
+-- SHOW CREATE TABLE Cidades;
+-- SHOW COLUMNS FROM Paises;
+-- DESCRIBE Cidades;
+
+INSERT INTO Paises VALUES(1,'Brasil');
+INSERT INTO Paises(nome) VALUES('Argentina'),('Espanha');
+
+-- SELECT * FROM Paises;
+-- SELECT nome FROM Paises ORDER BY nome DESC;
+-- SELECT nome FROM Paises ORDER BY nome;
+-- SELECT * FROM Paises WHERE nome="Argentina";
+
+-- UPDATE Paises SET nome="Portugal" WHERE id_pais=3;
+-- SELECT nome FROM Paises WHERE id_pais=3;
+
+INSERT INTO Cidades VALUES(1,"Londrina","PR",1);
+INSERT INTO Cidades(nome,uf,id_pais) VALUES("Buenos Aires",null,2);
+
+-- SELECT * FROM Cidades;
+-- SELECT nome FROM Cidades ORDER BY nome DESC;
+-- SELECT nome FROM Cidades ORDER BY nome;
+-- SELECT * FROM Cidades WHERE uf="PR";
+-- SELECT * FROM Cidades WHERE uf IS NULL;
+
+-- SELECIONAR TODAS AS CIDADES DO PARANÁ
+-- SELECT * FROM Cidades WHERE uf="PR";
+
+-- SELECIONAR TODAS AS CIDADES QUE NÃO SÃO DO PARANÁ
+-- SELECT * FROM Cidades WHERE uf!='PR';
+
+-- SELECIONAR TODAS AS CIDADES QUE TEM UF NULL
+-- SELECT * FROM Cidades WHERE uf IS NULL;
+
+-- SELECIONAR O NOME DE TODOS OS PAISES EM ORDEM ALFABÉTICA(DEFAULT)
+-- SELECT nome FROM Paises ORDER BY nome;
+
+-- SELECIONAR O NOME DE TODOS OS PAISES EM ORDEM ALFABÉTICA DESCRESCENTE (DESC)
+-- SELECT nome FROM Paises ORDER BY nome DESC;
+
+-- SELECIONAR TODOS OS REGISTROS DA TABELA CIDADE EM ORDEM ALFABÉTICA(DEFAULT) DE NOME
+-- SELECT * FROM Cidades ORDER BY nome;
+
+-- SELECIONAR O NOME DA CIDADE COM OS RESPECTIVOS NOMES DE SEUS PAISES 
+-- ORDEM ALFABÉTICA DO NOME DA CIDADE(DEFAULT)
+-- SELECT Cidades.nome, Paises.nome FROM Cidades, Paises WHERE Cidades.id_pais=Paises.id_pais ORDER BY Cidades.nome;
+
+-- SELECIONAR O NOME DA CIDADE E SUAS UF COM OS RESPECTIVOS NOMES DE SEUS PAISES 
+-- ORDEM ALFABÉTICA DO NOME DA CIDADE(DEFAULT)
+-- SELECT Cidades.nome, Cidades.uf, Paises.nome FROM Cidades, Paises WHERE Cidades.id_pais=Paises.id_pais ORDER BY Cidades.nome;
+
+-- SELECIONAR O NOME DA CIDADE E A UF DE TODAS AS CIDADES COM UF NULL
+-- SELECT Cidades.nome, Cidades.uf FROM Cidades WHERE uf IS NULL;
+
+-- CRIE MAIS 5 CIDADES 
+INSERT INTO Cidades(nome,uf,id_pais) VALUES("Maringá","PR",1),("Madrid",null,3),("Mendoza",null,2),("Campinas","SP",1);
+INSERT INTO Cidades VALUES(7,"Barcelona",null,2),(8,"Salta", null,3);
+
+-- INSERIR 1 PAIS
+INSERT INTO Paises(nome) VALUES("EUA");
+-- SELECT * FROM Paises;
+-- UPDATE Paises SET nome = "Ucrânia" WHERE id_pais=4;
+
+-- INSERIR 1 CIDADE
+-- SELECT * FROM Cidades;
+-- UPDATE Cidades SET uf="pr" WHERE id_cidade=1;
+INSERT INTO Cidades(nome,uf,id_pais) VALUES("Itajaí","SC",1);
+
+-- SELECIONAR O NOME DAS CIDADES COM OS NOMES DOS SEUS RESPECTIVOS PAISES 
+-- EM ORDEM ALFABETICA CRESCENTE DO NOME DA CIDADE(APENAS CIDADES DO PARANÁ) 
+-- SELECT Cidades.nome, Paises.nome FROM Cidades, Paises WHERE Cidades.id_pais=Paises.id_pais AND uf="PR" ORDER BY Cidades.nome;
+
+-- SELECIONAR O NOME DAS CIDADES COM OS NOMES DOS SEUS RESPECTIVOS PAISES EM
+-- ORDEM ALFABETICA CRESCENTE DO NOME DA CIDADE(APENAS CIDADES DO PARANÁ E SP) 
+-- SELECT Cidades.nome, Cidades.uf, Paises.nome FROM Cidades, Paises WHERE Cidades.id_pais=Paises.id_pais 
+-- AND (uf="PR" OR uf="SC") ORDER BY Cidades.nome ASC;
+
+-- SELECIONAR O NOME DAS CIDADES COM OS NOMES DOS SEUS RESPECTIVOS PAISES EM
+-- ORDEM ALFABETICA CRESCENTE DO NOME DA CIDADE(EXCETO PARANÁ E MOSTRA OS QUE SAO NULOS) 
+-- SELECT Cidades.nome, Cidades.uf, Paises.nome FROM Cidades,Paises WHERE Cidades.id_pais=Paises.id_pais 
+-- AND (Cidades.uf!="PR" OR Cidades.uf IS NULL) ORDER BY Cidades.nome ASC;
+
+-- SELECIONAR O NOME DAS CIDADES COM OS NOMES DOS SEUS RESPECTIVOS PAISES EM
+-- ORDEM ALFABETICA CRESCENTE DO NOME DA CIDADE(APENAS CIDADES DO BRASIL) 
+-- SELECT Cidades.nome, Paises.nome FROM Cidades, Paises WHERE Cidades.id_pais=Paises.id_pais 
+-- AND Paises.nome="Brasil" ORDER BY Cidades.nome ASC;
+
+-- SELECIONAR O NOME DE TODAS AS CIDADES QUE COMEÇAM COM L
+-- SELECT Cidades.nome FROM Cidades WHERE Cidades.nome LIKE "L%";
+
+-- SELECIONAR O NOME DE TODAS AS CIDADES QUE CONTENHAM ON EM QUALQUER PARTE DO NOME
+-- SELECT Cidades.nome FROM Cidades WHERE Cidades.nome LIKE "%ON%";
+
+CREATE TABLE Medicos (
+	id_medico INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    data_nas DATE NOT NULL,
+    CPF VARCHAR(30) NOT NULL,
+    salario DECIMAL(8,2) NOT NULL,
+    id_cidade INT NOT NULL,
+    FOREIGN KEY (id_cidade) REFERENCES Cidades(id_Cidade)
+);
+
+INSERT INTO Medicos(nome,data_nas,CPF,salario,id_cidade) VALUES("Ana Maria","2003-10-14","123.456.789-10",20000.00,1),
+("Janaina Lima","1978-01-16","987.654.321.00",35000.00,2), ("Bruna Santos","1999-06-27","135.654.458.76",12000.00,3);
+
+-- SELECT * FROM Medicos;
+
+-- SHOW TABLES;
+
+-- comando ddl para renomear o nome da tabela medico para medicos
+-- ALTER TABLE Medicos RENAME Medico;
+-- RENAME TABLE Medico TO Medicos;
+
+-- SHOW TABLES;
+
+-- comando ddl para renomear o nome da tabela cidade para cidades
+-- ALTER TABLE Cidades RENAME Cidade;
+-- RENAME TABLE Cidade TO Cidades;
+
+-- SHOW TABLES;
+
+-- ADICIONAR O ATRIBUTO OBSERVAÇÕES NA TABELA DE MEDICOS NO FIM DA TABELA
+ALTER TABLE Medicos ADD observacoes VARCHAR(100) NOT NULL;
+
+-- DESC Medicos;
+
+-- REMOVER O ATRIBUTO DA TABELA MEDICOS
+ALTER TABLE Medicos DROP observacoes;
+
+-- DESC Medicos;
+-- SELECT * FROM Medicos;
+
+-- SELECIONE O NOME E A DATA DE NASCIMENTO DOS MÉDICOS 
+-- QUE NASCERAM ANTES DO ANO 2000. ORDENE POR NOME
+-- SELECT nome, data_nas FROM Medicos WHERE data_nas<"2000-01-01" ORDER BY nome;
+
+-- SELECIONE O NOME E O SALARIO DOS MEDICOS QUE GANHAM MAIS DE R$ 8000
+-- SELECT nome, salario FROM Medicos WHERE salario>8000;
+
+-- ALTERE O SALARIO DE ALGUM MEDICO PARA R$8000
+UPDATE Medicos SET salario=8000 WHERE id_medico=2;
+
+-- SELECT * FROM Medicos;
+
+-- SELECIONE O NOME E O SALARIO DOS MEDICOS QUE GANHAM R$ 12000 OU MENOS. 
+-- ORDENE EM ORDEM DECRESCENTE DE SALÁRIO
+-- SELECT nome, salario FROM Medicos WHERE salario<=12000 ORDER BY salario DESC;
+
+-- SELECIONE O NOME E O SALARIO DOS MEDICOS QUE GANHAM R$ 8000 (OU MENOS)
+-- E R$13000 (OU MAIS). ORDENE EM ORDEM DECRESCENTE DE SALARIO
+-- SELECT nome, salario FROM Medicos WHERE salario<=8000 OR salario>=13000 ORDER BY salario DESC;
+
+-- SELECIONE O NOME E O SALARIO DOS MEDICOS QUE GANHAM ENTRE R$ 8000 E R$ 10000
+-- SELECT nome, salario FROM Medicos WHERE salario >= 8000 AND salario <= 10000;
+-- BETWEEN => OPERADOR ENTRE
+-- SELECT nome, salario FROM Medicos WHERE salario BETWEEN 8000 AND 10000;
+
+-- APRESENTE O TOTAL DE MÉDICOS CADASTRADOS
+-- SELECT COUNT(nome) FROM Medicos;
+
+-- APRESENTE O VALOR DO SALÁRIO MAIS BAIXO DA TABELA DE MÉDICOS
+-- SELECT MIN(salario) FROM Medicos;
+
+-- APRESENTE O VALOR DO SALÁRIO MAIS ALTO DA TABELA DE MÉDICOS
+-- SELECT MAX(salario) FROM Medicos;
+
+-- APRESENTE O VALOR DO SALÁRIO MAIS ALTO DA TABELA DE MÉDICOS
+-- SELECT AVG(salario) FROM Medicos;
+
+-- APRESENTE O VALOR DO SALÁRIO MAIS ALTO DA TABELA DE MÉDICOS
+-- SELECT SUM(salario) FROM Medicos;
+
